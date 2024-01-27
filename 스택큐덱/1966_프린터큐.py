@@ -14,6 +14,7 @@ for i in range(n):
         for i in range(1, len(q)):
             if q[i][0] > mx:
                 mx = q[i][0] 
+                
         if q[0][0] == mx:
             fo = q.popleft()
             print_cnt += 1
