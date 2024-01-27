@@ -1,8 +1,9 @@
+// 백준 25314 코딩은 체육과목입니다
 package String;
 
 import java.util.Scanner;
 
-public class Main {
+public class B_25314 {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         int n = sc.nextInt();
