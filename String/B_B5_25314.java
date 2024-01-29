@@ -3,7 +3,7 @@ package String;
 
 import java.util.Scanner;
 
-public class B_25314 {
+public class B_B5_25314 {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         int n = sc.nextInt();
