@@ -1,8 +1,6 @@
 // 백준 1012 유기농 배추
 // 좌표 클래스 + 재귀 DFS로 다시 풀어보기
 
-
-
 package DFS;
 
 import java.io.BufferedReader;
