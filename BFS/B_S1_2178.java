@@ -1,3 +1,5 @@
+// 백준 2178 미로 탐색
+
 package BFS;
 
 import java.io.BufferedReader;
