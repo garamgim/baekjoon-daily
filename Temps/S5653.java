@@ -3,16 +3,15 @@ package Temps;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class S5653 {
-    static int N;
-    static int M;
+    static int N, M, K;
     static int[] dr = new int[]{-1, 1, 0, 0};
     static int[] dc = new int[]{0, 0, -1, 1};
-    static int[] ddr = new int[]{-1, 1, 1, -1};
-    static int[] ddc = new int[]{1, 1, -1, -1};
     static int[][] grid;
+    static PriorityQueue<int[]> q;
+    static int sec;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -22,7 +21,7 @@ public class S5653 {
             String[] temp = br.readLine().split(" ");
             N = Integer.parseInt(temp[0]);
             M = Integer.parseInt(temp[1]);
-            int K = Integer.parseInt(temp[2]);
+            K = Integer.parseInt(temp[2]);
 
             grid = new int[600+N][600+M];
 
@@ -36,47 +35,76 @@ public class S5653 {
                 }
             }
 
-            for (int s = 1; s <= K; s++) {
-                for (int i = 0; i < sizeR; i++) {
-                    for (int j = 0; j < sizeC; j++) {
-                        if (grid[i][j] > 0 && (s - 1) % grid[i][j] == 0) {
-                            reproduce(i, j, grid[i][j]);
-                        }
-                    }
-                }
-            }
-
-            int cnt = 0;
+            q = new PriorityQueue<>((o1, o2) -> Integer.compare(o2[3], o1[3]));
 
             for (int i = 0; i < sizeR; i++) {
                 for (int j = 0; j < sizeC; j++) {
                     if (grid[i][j] > 0) {
-                        cnt++;
+                        // 행, 열, 현재 상태, 원래의 상태, 활성화 상태 (초기값 0)
+                        q.add(new int[]{i, j, grid[i][j]*2, grid[i][j], 0});
                     }
                 }
             }
 
-            System.out.printf("#%d %d\n", t, cnt);
+            sec = 0;
+
+            while (sec < K) {
+                bfs();
+                sec++;
+            }
+
+            int size = 0;
+
+            for (int[] cell : q) {
+                if (cell[4] == 1) {
+                    size++;
+                }
+            }
+
+            System.out.printf("#%d %d\n", t, size);
         }
     }
 
-    static void reproduce(int r, int c, int myNum) {
-        for (int d = 0; d < 4; d++) {
-            int nr = r + dr[d];
-            int nc = c + dc[d];
-            boolean inRange = (0 <= nr && nr < N && 0 <= nc && nc < M);
-            boolean didLose = false;
-            for (int e = 0; e < 2; e++) {
-                int nnr = r + ddr[(d+e)%4];
-                int nnc = c + ddc[(d+e)%4];
-                if (grid[nnr][nnc] > grid[r][c]) {
-                    didLose = true;
+    static void bfs() {
+        int size = q.size();
+        ArrayList<int[]> temp = new ArrayList<>();
+
+        for (int i = 0; i < size; i++) {
+            int[] cell = q.poll();
+
+            int r = cell[0];
+            int c = cell[1];
+            int currStatus = cell[2];
+            int cellData = cell[3];
+
+            if (currStatus > cellData) {
+                cell[2] -= 1;
+                if (cell[2] == cellData) cell[4] = 1;  // cellData 시간이 당도하면 활성화
+                temp.add(cell);
+                // cellData 시간 당도 후 1시간 후 번식 완료
+            } else if (currStatus == cellData) {
+                for (int d = 0; d < 4; d++) {
+                    int nr = r + dr[d];
+                    int nc = c + dc[d];
+                    if (grid[nr][nc] == 0) {
+                        grid[nr][nc] = cellData;
+                        temp.add(new int[]{nr, nc, cellData * 2, cellData, 0});
+                    }
+                }
+                // 번식 후 생명력이 다하면 큐에 더해주지 않음
+                cell[2] -= 1;
+                if (cell[2] > 0) {
+                    temp.add(cell);
+                }
+            } else {
+                // currStatus < cell Data -1
+                cell[2] -= 1;
+                if (cell[2] > 0) {
+                    temp.add(cell);
                 }
             }
-            if (inRange && !didLose && grid[nr][nc] == 0) {
-                grid[nr][nc] = myNum;
-            }
         }
-        grid[r][c] = -1;
+
+        q.addAll(temp);
     }
 }
