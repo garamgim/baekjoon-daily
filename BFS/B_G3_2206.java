@@ -15,7 +15,6 @@ public class B_G3_2206 {
     static int[] dc = new int[]{0, 0, -1, 1};
     static int[][] map;
     static int[][][] visited;
-    static int cnt;
     static Queue<int[]> q;
 
     public static void main(String[] args) throws IOException {
@@ -48,7 +47,6 @@ public class B_G3_2206 {
     }
 
     static int bfs() {
-
         while (!q.isEmpty()) {
             int size = q.size();
 
@@ -83,7 +81,6 @@ public class B_G3_2206 {
                 }
             }
         }
-
         return -1;
     }
 }
