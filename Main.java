@@ -78,13 +78,21 @@ public class Main {
                             visited[nr][nc] = visited[r][c] + 1;
                             q.add(new int[]{nr, nc});
                         } else if (map[nr][nc] < babySize) {
-                            System.out.printf("ate:%d r:%d c:%d\n", map[nr][nc], nr, nc);
+                            System.out.printf("ate:%d ---- r:%d c:%d\n", map[nr][nc], nr, nc);
+                            map[nr][nc] = 9;
+                            for (int j = 0; j < N; j++) {
+                                System.out.println(Arrays.toString(map[j]));
+                            }
                             map[nr][nc] = 0;
+                            System.out.printf("move:%d \n", visited[r][c] + 1);
+                            System.out.println();
                             eaten++;
                             totalMove += (visited[r][c] + 1);
                             didEat = true;
                             if (eaten == babySize) {
                                 babySize++;
+                                System.out.printf("grew: %d \n", babySize);
+                                System.out.println("--------------");
                                 eaten = 0;
                             }
                             babyLocation = new int[]{nr, nc};
@@ -98,8 +106,8 @@ public class Main {
 //                6
 //                5 4 3 2 3 4
 //                4 3 2 3 4 5
-//                3 2 9 5 6 6
-//                2 0 2 3 4 5
+//                3 2 0 5 6 6
+//                2 1 2 3 4 5
 //                3 2 1 6 5 4
 //                6 6 6 6 6 6
 
