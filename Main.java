@@ -13,20 +13,21 @@ import jdk.jshell.execution.JdiDefaultExecutionControl;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.file.FileAlreadyExistsException;
 import java.util.*;
 
 public class Main {
     static int N;
-    static int[] dr = {-1, 0, 1, 0};
-    static int[] dc = {0, -1, 0, 1};
+    static int[] dr = {-1, 0, 0, 1};
+    static int[] dc = {0, -1, 1, 0};
     static int[] babyLocation;
     static int babySize;
 
     static int eaten;
     static int totalMove;
-    static int tempMove;
     static boolean didEat;
     static Queue<int[]> q;
+    static PriorityQueue<int[]> feed;
     static int[][] visited;
     static int[][] map;
     static HashMap<Integer, ArrayList<int[]>> startPoints;
@@ -38,6 +39,7 @@ public class Main {
         map = new int[N][N];
         visited = new int[N][N];
         q = new LinkedList<>();
+        feed = new PriorityQueue<>((int[] o1, int[] o2) -> o1[0] != o2[0]? Integer.compare(o1[0], o2[0]) : Integer.compare(o1[1], o2[1]));
 
         for (int i = 0; i < N; i++) {
             String[] row = br.readLine().split(" ");
@@ -45,15 +47,14 @@ public class Main {
                 map[i][j] = Integer.parseInt(row[j]);
                 if (map[i][j] == 9) {
                     map[i][j] = 0;
-                    babyLocation = new int[]{i, j};
-                    q.add(babyLocation);
+                    visited[i][j] = 1;
+                    q.add(new int[]{i, j});
                 }
             }
         }
 
         babySize = 2;
         eaten = 0;
-        tempMove = 0;
         totalMove = 0;
         didEat = false;
         bfs();
@@ -62,11 +63,17 @@ public class Main {
 
     static void bfs() {
         while (!q.isEmpty()){
+            didEat = false;
             int size = q.size();
+            ArrayList<int[]> temps = new ArrayList<>();
+            System.out.println("Q: "+ Arrays.deepToString(q.toArray()));
+            int currDistance = 0;
+
             for (int i = 0; i < size; i++) {
                 int[] curr = q.poll();
                 int r = curr[0];
                 int c = curr[1];
+                currDistance = visited[r][c];
 
                 for (int d = 0; d < 4; d++) {
                     int nr = r + dr[d];
@@ -76,42 +83,42 @@ public class Main {
                             continue;
                         } else if (map[nr][nc] == 0 || map[nr][nc] == babySize) {
                             visited[nr][nc] = visited[r][c] + 1;
-                            q.add(new int[]{nr, nc});
+                            temps.add(new int[]{nr, nc});
                         } else if (map[nr][nc] < babySize) {
-                            System.out.printf("ate:%d ---- r:%d c:%d\n", map[nr][nc], nr, nc);
-                            map[nr][nc] = 9;
-                            for (int j = 0; j < N; j++) {
-                                System.out.println(Arrays.toString(map[j]));
-                            }
-                            map[nr][nc] = 0;
-                            System.out.printf("move:%d \n", visited[r][c] + 1);
-                            System.out.println();
-                            eaten++;
-                            totalMove += (visited[r][c] + 1);
-                            didEat = true;
-                            if (eaten == babySize) {
-                                babySize++;
-                                System.out.printf("grew: %d \n", babySize);
-                                System.out.println("--------------");
-                                eaten = 0;
-                            }
-                            babyLocation = new int[]{nr, nc};
-                            visited = new int[N][N];
-                            q.clear();
-                            q.add(babyLocation);
-                            break;
+                            feed.add(new int[]{nr, nc});
                         }
                     }
                 }
-//                6
-//                5 4 3 2 3 4
-//                4 3 2 3 4 5
-//                3 2 0 5 6 6
-//                2 1 2 3 4 5
-//                3 2 1 6 5 4
-//                6 6 6 6 6 6
+            }
 
-                if (didEat) continue;
+            if (!feed.isEmpty()) {
+                System.out.println(Arrays.deepToString(feed.toArray()));
+                eaten++;
+                totalMove += currDistance;
+                int[] closest = feed.poll();
+                int cr = closest[0];
+                int cc = closest[1];
+                System.out.printf("ate:%d ---- r:%d c:%d\n", map[cr][cc], cr, cc);
+                map[cr][cc] = 9;
+                for (int j = 0; j < N; j++) {
+                    System.out.println(Arrays.toString(map[j]));
+                }
+                map[cr][cc] = 0;
+                System.out.printf("move:%d current size:%d \n", currDistance, babySize);
+                System.out.println();
+                if (eaten == babySize) {
+                    babySize++;
+                    System.out.printf("grew: %d \n", babySize);
+                    System.out.println("--------------");
+                    eaten = 0;
+                }
+                visited = new int[N][N];
+                visited[cr][cc] = 1;
+                feed.clear();
+                q.clear();
+                q.add(new int[]{cr, cc});
+            } else {
+                q.addAll(temps);
             }
         }
     }
