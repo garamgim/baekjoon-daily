@@ -43,7 +43,7 @@ public class S_5653 {
                 for (int j = 0; j < sizeC; j++) {
                     if (grid[i][j] > 0) {
                         // 행, 열, 현재 상태, 원래의 상태, 활성화 상태 (초기값 0)
-                        q.add(new int[]{i, j, grid[i][j]*2, grid[i][j], 0});
+                        q.add(new int[]{i, j, grid[i][j]*2, grid[i][j]});
                     }
                 }
             }
@@ -80,7 +80,7 @@ public class S_5653 {
                     int nc = c + dc[d];
                     if (grid[nr][nc] == 0) {
                         grid[nr][nc] = cellData;
-                        temp.add(new int[]{nr, nc, cellData * 2, cellData, 0});
+                        temp.add(new int[]{nr, nc, cellData * 2, cellData});
                     }
                 }
                 cell[2] -= 1;
