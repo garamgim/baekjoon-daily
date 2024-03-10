@@ -34,12 +34,12 @@ public class B_G4_2573 {
         }
 
         int year = 0;
-        boolean extinct = false;
 
         while (true) {
             continent = 0;
             boolean hasIce = false;
             visited = new int[N][M];
+
             for (int i = 0; i < N; i++) {
                 for (int j = 0; j < M; j++) {
                     if (map[i][j] > 0 && visited[i][j] == 0) {
