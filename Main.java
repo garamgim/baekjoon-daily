@@ -52,11 +52,10 @@ public class Main {
     static void spread() {
         ArrayList<int[]> childrenDust = new ArrayList<>();
 
-        for (int i = 0; i < dust.size(); i++) {
-            int[] loc = dust.get(i);
+        for (int[] loc : dust) {
             int r = loc[0];
             int c = loc[1];
-            int child = (int) (map[r][c] / 5);
+            int child = map[r][c] / 5;
             for (int d = 0; d < 4; d++) {
                 int nr = r + dr[d];
                 int nc = c + dc[d];
@@ -67,13 +66,33 @@ public class Main {
             }
         }
 
-        for (int i = 0; i < childrenDust.size(); i++) {
-            int[] info = childrenDust.get(i);
+        for (int[] info : childrenDust) {
             int r = info[0];
             int c = info[1];
             int d = info[2];
             map[r][c] += d;
             if (!dust.contains(new int[]{r, c})) dust.add(new int[]{r, c});
         }
+    }
+
+    static void purify() {
+        ArrayList<int[]> temp = new ArrayList<>();
+        int[] counterClock = airPurifier[0];
+        int r = counterClock[0];
+        int c = counterClock[1];
+        int currVal = 0;
+        temp.add(new int[]{r, c, currVal});
+        int d = 0;
+        while (true) {
+            currVal = map[r][c];
+            if (!inRange(r + dr[d], c + dc[d])) d = (d - 1) % 4;
+            r += dr[d];
+            c += dc[d];
+        }
+        int[] clock = airPurifier[1];
+    }
+
+    static boolean inRange(int nr, int nc) {
+        return (0 <= nr && nr < R && 0 <= nc && nc < C);
     }
 }
