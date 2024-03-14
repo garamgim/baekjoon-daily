@@ -1,8 +1,12 @@
+// 백준 10830 행렬 제곱
+
+package DivideAndConquer;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class Main {
+public class B_G4_10830 {
     static int N;
     static long B;
     static long[][] matrix;
@@ -31,7 +35,7 @@ public class Main {
         }
         System.out.println(sb);
     }
-    
+
     static long[][] divide(long n) {
         if (n == 1) {
             return matrix;
@@ -39,7 +43,7 @@ public class Main {
         long[][] smaller = divide(n/2);
         return (n % 2 == 0)? mul(smaller, smaller) : mul(mul(smaller, smaller), matrix);
     }
-    
+
     static long[][] mul(long[][] arr1, long[][] arr2) {
         long[][] result = new long[N][N];
         for (int i = 0; i < N; i++) {
