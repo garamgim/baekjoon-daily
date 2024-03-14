@@ -100,7 +100,6 @@ public class B_G4_19942 {
             finalAns.append("\n");
             for (int i = 0; i < ansSet.size(); i++) {
                 finalAns.append(ansSet.get(i));
-                if (i == ansSet.size()) break;
                 finalAns.append(" ");
             }
             System.out.println(finalAns);
