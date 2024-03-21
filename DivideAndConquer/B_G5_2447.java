@@ -1,5 +1,7 @@
 // 백준 2447 별 찍기 - 10
-
+// ***
+// * *
+// ***
 package DivideAndConquer;
 
 import java.io.*;
