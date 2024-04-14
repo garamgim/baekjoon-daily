@@ -242,4 +242,4 @@ static int prim(int start) {
 ## 참고
 [[Java]크루스칼 알고리즘(Kruskal Algorithm)](https://sskl660.tistory.com/72)
 
-[[알고리즘/ 그래프] 최소 스패닝 트리 - 크루스칼(Kruskal)과 프림(Prim) 알고리즘 (Java)](https://loosie.tistory.com/159)`
+[[알고리즘/ 그래프] 최소 스패닝 트리 - 크루스칼(Kruskal)과 프림(Prim) 알고리즘 (Java)](https://loosie.tistory.com/159)
