@@ -138,16 +138,16 @@ static boolean[] visited;
 
 class Edge implements Comparable<Edge> {
     int to;
-    int value;
+    int weight;
 
-    public Edge(int to, int value) {
+    public Edge(int to, int weight) {
         this.to = to;
-        this.value = value;
+        this.weight = weight;
     }
 
     @Override
     public int compareTo(Edge o) {
-        return this.value - o.value;
+        return this.weight - o.weight;
     }
 }
 
@@ -161,7 +161,7 @@ static int prim(int start) {
     while (!pq.isEmpty()) {
         Edge curr = pq.poll();
         int next = curr.to;
-        int weight = curr.value;
+        int weight = curr.weight;
 
         if (visited[next]) continue;
         
