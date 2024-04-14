@@ -155,7 +155,7 @@ static int prim(int start) {
     Queue<Edge> pq = new PriorityQueue<>();
     pq.add(new Edge(start, 0));
 
-    boolean[] visited = new boolean[V + 1];
+    boolean[] MST = new boolean[V + 1];
     int totalCost = 0;
 
     while (!pq.isEmpty()) {
@@ -163,13 +163,13 @@ static int prim(int start) {
         int next = curr.to;
         int weight = curr.weight;
 
-        if (visited[next]) continue;
+        if (MST[next]) continue;
         
-        visited[next] = true;
+        MST[next] = true;
         totalCost += weight;
 
         for (Edge nextNode : adjl[next]) {
-            if (!visited[nextNode.to]) {
+            if (!MST[nextNode.to]) {
                 pq.add(nextNode);
             }
         }
